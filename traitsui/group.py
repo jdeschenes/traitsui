@@ -25,6 +25,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import (Bool, Delegate, Float, Instance, List, Property, Range,
                         ReadOnly, Str, TraitError, cached_property)
 
@@ -211,7 +213,7 @@ class Group(ViewSubElement):
 
         # Process any embedded Group options first:
         for value in values:
-            if (isinstance(value, basestring)) and (value[0:1] in '-|'):
+            if (isinstance(value, six.string_types)) and (value[0:1] in '-|'):
                 # Parse Group trait options if specified as a string:
                 self._parse(value)
 
@@ -222,7 +224,7 @@ class Group(ViewSubElement):
             elif type(value) in SequenceTypes:
                 # Map (...) or [...] to a Group():
                 content.append(Group(*value))
-            elif isinstance(value, basestring):
+            elif isinstance(value, six.string_types):
                 if value[0:1] in '-|':
                     # We've already parsed Group trait options above:
                     pass

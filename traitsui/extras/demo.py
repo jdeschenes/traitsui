@@ -29,8 +29,10 @@ import glob
 import token
 import tokenize
 import operator
-from StringIO import StringIO
+
 from configobj import ConfigObj
+
+import six
 
 from traits.api import (HasTraits, HasPrivateTraits, Str, Instance, Property,
                         Any, Code, HTML, true, false, Dict)
@@ -80,7 +82,7 @@ def extract_docstring_from_source(source):
         The source code, sans docstring.
     """
     # Reset file and generate python tokens
-    f = StringIO(source)
+    f = six.StringIO(source)
     python_tokens = tokenize.generate_tokens(f.readline)
 
     for ttype, tstring, tstart, tend, tline in python_tokens:
@@ -159,7 +161,7 @@ class DemoFileHandler(Handler):
         locals['__file__'] = df.path
         sys.modules['__main__'].__file__ = df.path
         try:
-            execfile(df.path, locals, locals)
+            exec(compile(open(df.path).read(), df.path, 'exec'), locals, locals)
             demo = self._get_object('modal_popup', locals)
             if demo is not None:
                 demo = ModalDemoButton(demo=demo)
@@ -186,7 +188,7 @@ class DemoFileHandler(Handler):
 
     def execute_test(self, df, locals):
         """ Executes the file in df.path in the namespace of locals."""
-        execfile(df.path, locals, locals)
+        exec(compile(open(df.path).read(), df.path, 'exec'), locals, locals)
 
     #-------------------------------------------------------------------------
     #  Closes the view:
@@ -546,7 +548,7 @@ class DemoPath(DemoTreeNodeObject):
     def _get_init_dic(self):
         init_dic = {}
         description, source = parse_source(join(self.path, '__init__.py'))
-        exec (exec_str + source) in init_dic
+        exec((exec_str + source) in init_dic)
         return init_dic
 
         # fixme: The following code should work, but doesn't, so we use the
@@ -657,7 +659,7 @@ class DemoPath(DemoTreeNodeObject):
 
         dirs = []
         files = []
-        for keyword, value in self.config_dict.items():
+        for keyword, value in six.iteritems(self.config_dict):
             if not value.get('no_demo'):
                 sourcedir = value.pop('sourcedir', None)
                 if sourcedir is not None:

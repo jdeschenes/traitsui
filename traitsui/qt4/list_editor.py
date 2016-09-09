@@ -17,6 +17,9 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+import six.moves as sm
+
 from pyface.qt import QtCore, QtGui
 
 from pyface.api import ImageResource
@@ -30,9 +33,9 @@ from traits.trait_base import user_name_for, xgetattr
 from traitsui.editors.list_editor import ListItemProxy, \
     ToolkitEditorFactory
 
-from editor import Editor
-from helper import IconButton
-from menu import MakeMenu
+from .editor import Editor
+from .helper import IconButton
+from .menu import MakeMenu
 
 #-------------------------------------------------------------------------
 #  'SimpleEditor' class:
@@ -625,7 +628,7 @@ class NotebookEditor(Editor):
             self.control.removeTab(self.control.indexOf(page))
 
             if self.factory.show_notebook_menu:
-                for name, tmp in self._pagewidgets.items():
+                for name, tmp in list(six.iteritems(self._pagewidgets)):
                     if tmp is page:
                         del self._pagewidgets[name]
                 self._context_menu.removeAction(self._action_dict[name])
@@ -655,7 +658,7 @@ class NotebookEditor(Editor):
         """ Closes the currently selected tab:
         """
         widget = self.control.currentWidget()
-        for i in xrange(len(self._uis)):
+        for i in sm.range(len(self._uis)):
             page, ui, _, _ = self._uis[i]
             if page is widget:
                 if force or ui.handler.close(ui.info, True):
@@ -665,7 +668,7 @@ class NotebookEditor(Editor):
         if self.factory.show_notebook_menu:
             # Find the name associated with this widget, so we can purge its action
             # from the menu
-            for name, tmp in self._pagewidgets.items():
+            for name, tmp in list(six.iteritems(self._pagewidgets)):
                 if tmp is widget:
                     break
             else:

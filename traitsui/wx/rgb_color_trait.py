@@ -23,6 +23,8 @@
 #-------------------------------------------------------------------------
 #  Imports:
 #-------------------------------------------------------------------------
+import six
+
 import wx
 
 from traits.api \
@@ -87,7 +89,7 @@ convert_to_color.info = (
 
 # RGB versions of standard colors:
 rgb_standard_colors = {}
-for name, color in standard_colors.items():
+for name, color in six.iteritems(standard_colors):
     rgb_standard_colors[name] = (color.Red() / 255.0,
                                  color.Green() / 255.0,
                                  color.Blue() / 255.0)
@@ -112,7 +114,7 @@ for color_name in w3c_color_database._color_names:
 
 
 def get_rgb_color_editor(*args, **traits):
-    from rgb_color_editor import ToolkitEditorFactory
+    from .rgb_color_editor import ToolkitEditorFactory
     return ToolkitEditorFactory(*args, **traits)
 
 # Trait whose value must be an RGB color:

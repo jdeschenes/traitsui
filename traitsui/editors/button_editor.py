@@ -24,6 +24,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import Str, Range, Enum, Property, Trait
 
 # CIRCULAR IMPORT FIXME: Importing from the source rather than traits.ui.api
@@ -97,7 +99,7 @@ class ToolkitEditorFactory(EditorFactory):
 
     def _set_value(self, value):
         self._value = value
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             try:
                 self._value = int(value)
             except:

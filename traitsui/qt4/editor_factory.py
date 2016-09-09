@@ -18,6 +18,8 @@ Traits-based user interface.
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+
 from pyface.qt import QtCore, QtGui
 
 from traits.api \
@@ -111,7 +113,7 @@ class TextEditor(Editor):
         """ Handles the user changing the contents of the edit control.
         """
         try:
-            self.value = unicode(self.control.text())
+            self.value = six.text_type(self.control.text())
         except TraitError as excp:
             pass
 

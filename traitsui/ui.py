@@ -28,6 +28,8 @@ from __future__ import absolute_import
 import shelve
 import os
 
+import six
+
 from traits.api import (
     Any,
     Bool,
@@ -281,7 +283,7 @@ class UI(HasPrivateTraits):
 
         # Make sure that 'visible', 'enabled', and 'checked' handlers are not
         # called after the editor has been disposed:
-        for object in self.context.values():
+        for object in six.itervalues(self.context):
             object.on_trait_change(self._evaluate_when, remove=True)
 
         # Notify the handler that the view has been closed:
@@ -352,7 +354,7 @@ class UI(HasPrivateTraits):
 
         # Get the context 'object' (if available):
         if len(context) == 1:
-            object = context.values()[0]
+            object = six.next(six.itervalues(context))
         else:
             object = context.get('object')
 
@@ -465,7 +467,7 @@ class UI(HasPrivateTraits):
         if (len(self._visible) +
             len(self._enabled) +
                 len(self._checked)) > 0:
-            for object in context.values():
+            for object in six.itervalues(context):
                 object.on_trait_change(self._evaluate_when, dispatch='ui')
             self._do_evaluate_when(at_init=True)
 
@@ -479,14 +481,14 @@ class UI(HasPrivateTraits):
     def sync_view(self):
         """ Synchronize context object traits with view editor traits.
         """
-        for name, object in self.context.items():
+        for name, object in six.iteritems(self.context):
             self._sync_view(name, object, 'sync_to_view', 'from')
             self._sync_view(name, object, 'sync_from_view', 'to')
             self._sync_view(name, object, 'sync_with_view', 'both')
 
     def _sync_view(self, name, object, metadata, direction):
         info = self.info
-        for trait_name, trait in object.traits(**{metadata: is_str}).items():
+        for trait_name, trait in six.iteritems(object.traits(**{metadata: is_str})):
             for sync in getattr(trait, metadata).split(','):
                 try:
                     editor_id, editor_name = [item.strip()
@@ -809,11 +811,11 @@ class UI(HasPrivateTraits):
         name = 'object'
         n = len(context)
         if (n == 2) and ('handler' in context):
-            for name, value in context.items():
+            for name, value in six.iteritems(context):
                 if name != 'handler':
                     break
         elif n == 1:
-            name = context.keys()[0]
+            name = six.next(six.iterkeys(context))
 
         value = context.get(name)
         if value is not None:
@@ -957,7 +959,7 @@ class UI(HasPrivateTraits):
             return None
 
         # Get the KeyBindings object to use:
-        values = context.values()
+        values = list(six.itervalues(context))
         key_bindings = view.key_bindings
         if key_bindings is None:
             from .key_bindings import KeyBindings

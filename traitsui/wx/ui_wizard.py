@@ -25,16 +25,18 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+
 import wx
 import wx.wizard as wz
 
-from constants \
+from .constants \
     import DefaultTitle
 
-from helper \
+from .helper \
     import restore_window, save_window, GroupEditor
 
-from ui_panel \
+from .ui_panel \
     import fill_panel_for_group
 
 from traits.api \
@@ -60,7 +62,7 @@ def ui_wizard(ui, parent):
     context = ui.context
     ui._context = context
     new_context = {}
-    for name, value in context.items():
+    for name, value in six.iteritems(context):
         if value is not None:
             new_context[name] = value.clone_traits()
         else:
@@ -159,7 +161,7 @@ def ui_wizard(ui, parent):
     if wizard.RunWizard(pages[0]):
         # If successful, apply the modified context to the original context:
         original = ui._context
-        for name, value in ui.context.items():
+        for name, value in six.iteritems(ui.context):
             if value is not None:
                 original[name].copy_traits(value)
             else:

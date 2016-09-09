@@ -18,11 +18,12 @@ using pickle.
 #  Imports:
 #-------------------------------------------------------------------------
 
-from cPickle import dumps, load, loads, PickleError
-from cStringIO import StringIO
 import warnings
 import io
 import sys
+
+import six
+import six.moves as sm
 
 from pyface.qt import QtCore, QtGui
 
@@ -59,11 +60,11 @@ class PyMimeData(QtCore.QMimeData):
             if data is not None:
                 # We may not be able to pickle the data.
                 try:
-                    pdata = dumps(data)
+                    pdata = sm.cPickle.dumps(data)
                     # This format (as opposed to using a single sequence) allows
                     # the type to be extracted without unpickling the data.
-                    self.setData(self.MIME_TYPE, dumps(data.__class__) + pdata)
-                except (PickleError, TypeError):
+                    self.setData(self.MIME_TYPE, sm.cPickledumps(data.__class__) + pdata)
+                except (sm.cPickle.PickleError, TypeError):
                     # if pickle fails, still try to create a draggable
                     warnings.warn(
                         ("Could not pickle dragged object %s, " + "using %s mimetype instead") %
@@ -131,11 +132,11 @@ class PyMimeData(QtCore.QMimeData):
 
         try:
             # Skip the type.
-            load(stream)
+            sm.cPickle.load(stream)
 
             # Recreate the instance.
-            return load(stream)
-        except PickleError:
+            return sm.cPickle.load(stream)
+        except sm.cPickle.PickleError:
             pass
 
         return None
@@ -148,8 +149,8 @@ class PyMimeData(QtCore.QMimeData):
 
         try:
             if self.hasFormat(self.MIME_TYPE):
-                return loads(self.data(self.MIME_TYPE).data())
-        except PickleError:
+                return sm.cPickle.loads(self.data(self.MIME_TYPE).data())
+        except sm.cPickle.PickleError:
             pass
 
         return None

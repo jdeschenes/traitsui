@@ -1,4 +1,6 @@
 
+import six
+
 from traits.api import Bool, List, Str
 from .date_editor import DateEditor
 
@@ -23,8 +25,8 @@ class CellFormat(object):
     bgcolor = None
     fgcolor = None
 
-    def __init__(self, **args):
-        for key, val in args.items():
+    def __init__(self, **kwargs):
+        for key, val in six.iteritems(kwargs):
             setattr(self, key, val)
 
 

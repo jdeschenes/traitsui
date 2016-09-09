@@ -23,6 +23,10 @@
 #-------------------------------------------------------------------------
 
 import sys
+
+import six
+import six.moves as sm
+
 import wx
 
 from math \
@@ -37,16 +41,16 @@ from traits.api \
 from traitsui.editors.range_editor \
     import ToolkitEditorFactory
 
-from editor_factory \
+from .editor_factory \
     import TextEditor
 
-from editor \
+from .editor \
     import Editor
 
-from constants \
+from .constants \
     import OKColor, ErrorColor
 
-from helper \
+from .helper \
     import TraitsUIPanel, Slider
 
 #-------------------------------------------------------------------------
@@ -955,7 +959,7 @@ def CustomEnumEditor(parent, factory, ui, object, name, description,
     if factory._enum is None:
         import traitsui.editors.enum_editor as enum_editor
         factory._enum = enum_editor.ToolkitEditorFactory(
-            values=range(factory.low, factory.high + 1),
+            values=list(sm.range(factory.low, factory.high + 1)),
             cols=factory.cols)
 
     if style == 'simple':

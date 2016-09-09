@@ -8,6 +8,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import (Bool, Dict, Either, Enum, Font, Instance, List,
                         Property, Str)
 
@@ -61,8 +63,8 @@ class DataFrameAdapter(TabularAdapter):
         import numpy as np
 
         column = self.item[self.column_id]
-        print self.columns
-        print column.name, column.dtype
+        print(self.columns)
+        print(column.name, column.dtype)
         if np.issubdtype(column.dtype, np.number):
             return 'right'
         else:
@@ -75,7 +77,7 @@ class DataFrameAdapter(TabularAdapter):
             return self._fonts.get(self.column_id, 'Courier 10')
 
     def _get_format(self):
-        if isinstance(self._formats, basestring):
+        if isinstance(self._formats, six.string_types):
             return self._formats
         else:
             return self._formats.get(self.column_id, '%s')
@@ -206,7 +208,7 @@ class _DataFrameEditor(UIEditor):
         if (factory.columns != []):
             columns = []
             for column in factory.columns:
-                if isinstance(column, basestring):
+                if isinstance(column, six.string_types):
                     title = column
                     column_id = column
                 else:

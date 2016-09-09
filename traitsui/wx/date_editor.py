@@ -77,7 +77,7 @@ class SimpleEditor(Editor):
             try:
                 self.value = datetime.date(year, month, day)
             except ValueError:
-                print 'Invalid date:', year, month, day
+                print('Invalid date:', year, month, day)
                 raise
         return
 

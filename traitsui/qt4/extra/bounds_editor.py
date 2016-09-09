@@ -1,3 +1,5 @@
+import six
+
 from pyface.qt import QtGui, QtCore
 
 from traits.api import Float, Any, Str, Trait
@@ -86,7 +88,7 @@ class _BoundsEditor(Editor):
     def update_low_on_enter(self):
         try:
             try:
-                low = eval(unicode(self._label_lo.text()).strip())
+                low = eval(six.text_type(self._label_lo.text()).strip())
                 if self.evaluate is not None:
                     low = self.evaluate(low)
             except Exception as ex:
@@ -108,7 +110,7 @@ class _BoundsEditor(Editor):
     def update_high_on_enter(self):
         try:
             try:
-                high = eval(unicode(self._label_hi.text()).strip())
+                high = eval(six.text_type(self._label_hi.text()).strip())
                 if self.evaluate is not None:
                     high = self.evaluate(high)
             except:

@@ -20,6 +20,8 @@
 
 import os.path
 
+import six
+
 from pyface.qt import QtCore, QtGui
 
 from traits.api \
@@ -182,7 +184,7 @@ class IconButton(QtGui.QPushButton):
         # Get the minimum icon size to use.
         ico_sz = sty.pixelMetric(QtGui.QStyle.PM_ButtonIconSize)
 
-        if isinstance(icon, basestring):
+        if isinstance(icon, six.string_types):
             pm = pixmap_cache(icon)
 
             # Increase the icon size to accomodate the image if needed.

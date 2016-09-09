@@ -36,13 +36,13 @@ from traitsui.help_template \
 from traitsui.menu \
     import UndoButton, RevertButton, HelpButton
 
-from helper \
+from .helper \
     import position_window
 
-from ui_base \
+from .ui_base \
     import BasePanel
 
-from editor \
+from .editor \
     import Editor
 
 
@@ -841,7 +841,7 @@ class _GroupPanel(object):
 
                 # If still no editor factory found, use a default text editor:
                 if editor_factory is None:
-                    from text_editor import ToolkitEditorFactory
+                    from .text_editor import ToolkitEditorFactory
                     editor_factory = ToolkitEditorFactory()
 
                 # If the item has formatting traits set them in the editor

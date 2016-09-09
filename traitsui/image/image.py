@@ -23,8 +23,11 @@ from stat import ST_MTIME
 from platform import system
 from zipfile import is_zipfile, ZipFile, ZIP_DEFLATED
 from time import time, sleep, localtime, strftime
-from thread import allocate_lock
+
 from threading import Thread
+
+import six
+import six.moves as sm
 
 from traits.api import (HasPrivateTraits, Property, Str, Int, List, Dict,
                         File, Instance, Bool, Undefined, TraitError, Float,
@@ -155,7 +158,7 @@ def get_python_value(source, name):
         code string.
     """
     temp = {}
-    exec source.replace(b'\r', b'') in globals(), temp
+    exec(source.replace(b'\r', b'') in globals(), temp)
     return temp[name]
 
 #-------------------------------------------------------------------------
@@ -178,7 +181,7 @@ def add_object_prefix(dict, object, prefix):
     """ Adds all traits from a specified object to a dictionary with a specified
         name prefix.
     """
-    for name, value in object.get().iteritems():
+    for name, value in six.iteritems(object.get()):
         dict[prefix + name] = value
 
 #-------------------------------------------------------------------------
@@ -273,7 +276,7 @@ class FastZipFile(HasPrivateTraits):
     #-- Default Value Implementations ----------------------------------------
 
     def _access_default(self):
-        return allocate_lock()
+        return sm._thread.allocate_lock()
 
     #-- Property Implementations ---------------------------------------------
 
@@ -415,8 +418,9 @@ class ImageInfo(HasPrivateTraits):
     #-- Property Implementations ---------------------------------------------
 
     def _get_image_info_code(self):
-        data = dict([(name, repr(value)) for name, value in self.get(
-            'name', 'image_name', 'description', 'category', 'keywords').iteritems()])
+        # FIXME: WHAT DOES THIS LINE DO?
+        data = dict([(name, repr(value)) for name, value in six.iteritems(self.get(
+            'name', 'image_name', 'description', 'category', 'keywords'))])
         data.update(self.get('width', 'height'))
         theme = self.theme
         data['alignment'] = repr(theme.alignment)
@@ -475,8 +479,8 @@ class ImageVolumeInfo(HasPrivateTraits):
 
     @cached_property
     def _get_image_volume_info_code(self):
-        data = dict([(name, repr(value)) for name, value in self.get(
-            'description', 'copyright', 'license', 'image_names').iteritems()])
+        data = dict([(name, repr(value)) for name, value in six.iteritems(self.get(
+            'description', 'copyright', 'license', 'image_names'))])
 
         return (ImageVolumeInfoCodeTemplate % data)
 
@@ -751,8 +755,8 @@ class ImageVolume(HasPrivateTraits):
 
     def _get_image_volume_code(self):
         data = dict([(name, repr(value))
-                     for name, value in self.get('description', 'category',
-                                                 'keywords', 'aliases', 'time_stamp').iteritems()])
+                     for name, value in six.iteritems(self.get('description', 'category',
+                                                 'keywords', 'aliases', 'time_stamp'))])
         data['info'] = ',\n'.join([info.image_volume_info_code
                                    for info in self.info])
 
@@ -839,7 +843,7 @@ class ImageVolume(HasPrivateTraits):
                     old_image.height = cur_image.height
                     cur_image.volume = None
 
-            images = cur_image_set.values()
+            images = list(six.itervalues(cur_image_set))
 
         # Set the new time stamp of the volume:
         self.time_stamp = time_stamp
@@ -1187,7 +1191,7 @@ class ImageLibrary(HasPrivateTraits):
             volume.keywords = list(keywords)
 
             # Create the final volume info list for the volume:
-            volume.info = info.values()
+            volume.info = list(six.itervalues(info))
 
             # Write the volume manifest source code to the zip file:
             zf.writestr('image_volume.py', volume.image_volume_code)

@@ -30,7 +30,7 @@ from pyface.qt import QtGui
 from traitsui.editors.null_editor \
     import NullEditor as ToolkitEditorFactory
 
-from editor \
+from .editor \
     import Editor
 
 #-------------------------------------------------------------------------

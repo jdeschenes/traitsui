@@ -22,6 +22,8 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+
 import wx
 
 from traits.api \
@@ -36,7 +38,7 @@ from traitsui.wx.editor \
 from traitsui.basic_editor_factory \
     import BasicEditorFactory
 
-from themed_control \
+from .themed_control \
     import ThemedControl
 
 #-------------------------------------------------------------------------
@@ -221,7 +223,7 @@ def themed_checkbox_editor(style=None, show_checkbox=True, **traits):
                 hover_off_image=None,
                 hover_on_image=None)
 
-    if isinstance(style, basestring):
+    if isinstance(style, six.string_types):
         group = style[0:1].upper()
         if (len(group) == 0) or (group not in 'BCGJTY'):
             group = 'B'

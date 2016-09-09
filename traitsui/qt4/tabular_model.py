@@ -22,6 +22,9 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+import six.moves as sm
+
 from pyface.qt import QtCore, QtGui
 
 from traitsui.ui_traits import SequenceTypes
@@ -220,7 +223,7 @@ class TabularModel(QtCore.QAbstractTableModel):
         adapter = editor.adapter
 
         self.beginInsertRows(parent, row, row + count - 1)
-        for i in xrange(count):
+        for i in sm.range(count):
             value = adapter.get_default_value(editor.object, editor.name)
             editor.callx(
                 adapter.insert,
@@ -238,7 +241,7 @@ class TabularModel(QtCore.QAbstractTableModel):
         editor = self._editor
         adapter = editor.adapter
         self.beginRemoveRows(parent, row, row + count - 1)
-        for i in xrange(count):
+        for i in sm.range(count):
             editor.callx(adapter.delete, editor.object, editor.name, row)
         self.endRemoveRows()
         n = self.rowCount(None)
@@ -280,7 +283,7 @@ class TabularModel(QtCore.QAbstractTableModel):
         # this is a drag from a tabular model
         data = mime_data.data(tabular_mime_type)
         if not data.isNull() and action == QtCore.Qt.MoveAction:
-            id_and_rows = map(int, str(data).split(' '))
+            id_and_rows = list(sm.map(int, str(data).split(' ')))
             table_id = id_and_rows[0]
             # is it from ourself?
             if table_id == id(self):

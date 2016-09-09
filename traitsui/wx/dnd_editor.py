@@ -26,11 +26,11 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+import six.moves as sm
+
 import wx
 import numpy
-
-from cPickle \
-    import load
 
 from traits.api \
     import Bool
@@ -57,7 +57,7 @@ except ImportError:
 from pyface.image_resource \
     import ImageResource
 
-from editor \
+from .editor \
     import Editor
 
 #-------------------------------------------------------------------------
@@ -74,7 +74,7 @@ object_image = ImageResource('object').create_image()
 inactive_image = ImageResource('inactive').create_image()
 
 # String types:
-string_type = (str, unicode)
+string_type = (str, six.text_type)
 
 #-------------------------------------------------------------------------
 #  'SimpleEditor' class:
@@ -223,7 +223,7 @@ class SimpleEditor(Editor):
         fh = None
         try:
             fh = file(file_name, 'rb')
-            object = load(fh)
+            object = sm.cPickle.load(fh)
         except:
             object = None
 

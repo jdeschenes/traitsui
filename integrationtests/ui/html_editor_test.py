@@ -28,7 +28,7 @@ from traitsui.api \
 sample = """This is a code block:
 
     def foo ( bar ):
-        print 'bar:', bar
+        print('bar:', bar)
 
 This is an unordered list:
  - An

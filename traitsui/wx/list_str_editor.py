@@ -22,6 +22,9 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+import six.moves as sm
+
 import wx
 
 from traits.api \
@@ -43,7 +46,7 @@ from traitsui.wx.editor \
 from pyface.image_resource \
     import ImageResource
 
-from helper \
+from .helper \
     import disconnect, disconnect_no_id
 
 try:
@@ -759,9 +762,9 @@ class _ListStrEditor(Editor):
         name = self.name
 
         if increment >= 0:
-            items = xrange(start, self.item_count)
+            items = sm.range(start, self.item_count)
         else:
-            items = xrange(start, -1, -1)
+            items = sm.range(start, -1, -1)
 
         for index in items:
             if search in get_text(object, name, index).lower():

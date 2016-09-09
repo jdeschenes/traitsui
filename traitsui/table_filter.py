@@ -24,6 +24,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import (
     Any,
     Bool,
@@ -298,9 +300,8 @@ class GenericTableFilterRule(HasPrivateTraits):
     def __init__(self, **traits):
         super(GenericTableFilterRule, self).__init__(**traits)
         if self.name == '':
-            names = self.filter._trait_values.keys()
+            names = sorted(six.iterkeys(self.filter._trait_values))
             if len(names) > 0:
-                names.sort()
                 self.name = names[0]
                 self.enabled = False
 

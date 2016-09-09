@@ -673,7 +673,7 @@ The following text produces the same displayed HTML as in Figure 34, when
     This is a code block:
 
         def foo ( bar ):
-            print 'bar:', bar
+            print('bar:', bar)
 
     This is an unordered list:
      - An

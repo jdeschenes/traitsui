@@ -25,6 +25,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import HasPrivateTraits, Instance, Constant, Bool
 
 #-------------------------------------------------------------------------
@@ -55,7 +57,7 @@ class UIInfo(HasPrivateTraits):
         """ Binds all of the associated context objects as traits of the
             object.
         """
-        for name, value in self.ui.context.items():
+        for name, value in six.iteritems(self.ui.context):
             self.bind(name, value)
 
     #-------------------------------------------------------------------------

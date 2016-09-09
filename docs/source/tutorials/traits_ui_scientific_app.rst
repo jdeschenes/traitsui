@@ -240,8 +240,8 @@ to open a dialog to edit its properties :
 
             def capture(self):
                 """ Captures an image on the camera and returns it """
-                print "capturing an image at %i ms exposure, gain: %i" % (
-                        self.exposure, self.gain )
+                print("capturing an image at %i ms exposure, gain: %i" % (
+                        self.exposure, self.gain ))
 
         if __name__ == "__main__":
             camera = Camera()
@@ -543,12 +543,12 @@ method:
         class MyThread(Thread):
             def run(self):
                 sleep(2)
-                print "MyThread done"
+                print("MyThread done")
 
         my_thread = MyThread()
 
         my_thread.start()
-        print "Main thread done"
+        print("Main thread done")
 
 The above code yields the following output::
 

@@ -24,6 +24,9 @@
 
 from operator import itemgetter
 
+import six
+import six.moves as sm
+
 import wx
 
 from traits.api \
@@ -61,13 +64,13 @@ from pyface.image_resource \
 from pyface.timer.api \
     import do_later
 
-from editor \
+from .editor \
     import Editor
 
-from table_model \
+from .table_model \
     import TableModel, TraitGridSelection
 
-from helper import TraitsUIPanel
+from .helper import TraitsUIPanel
 from functools import reduce
 
 #-------------------------------------------------------------------------
@@ -757,7 +760,7 @@ class TableEditor(Editor, BaseTableEditor):
         values = []
         for row0, col0 in tl:
             row1, col1 = br.next()
-            for row in xrange(row0, row1 + 1):
+            for row in sm.range(row0, row1 + 1):
                 if row < rows:
                     values.append((rio(row), gfi(row)))
 
@@ -794,7 +797,7 @@ class TableEditor(Editor, BaseTableEditor):
         values = []
         for row0, col0 in tl:
             row1, col1 = br.next()
-            for row in xrange(row0, row1 + 1):
+            for row in sm.range(row0, row1 + 1):
                 if row < rows:
                     values.append((rio(row), gfi(row)))
 
@@ -824,7 +827,7 @@ class TableEditor(Editor, BaseTableEditor):
         values = []
         for row0, col0 in tl:
             row1, col1 = br.next()
-            for col in xrange(col0, col1 + 1):
+            for col in sm.range(col0, col1 + 1):
                 values.append((col, cols[col].name))
 
         if len(values) > 0:
@@ -853,7 +856,7 @@ class TableEditor(Editor, BaseTableEditor):
         values = []
         for row0, col0 in tl:
             row1, col1 = br.next()
-            for col in xrange(col0, col1 + 1):
+            for col in sm.range(col0, col1 + 1):
                 values.append((col, cols[col].name))
 
         # Sort by increasing row index:
@@ -884,9 +887,9 @@ class TableEditor(Editor, BaseTableEditor):
         values = []
         for row0, col0 in tl:
             row1, col1 = br.next()
-            for row in xrange(row0, row1 + 1):
+            for row in sm.range(row0, row1 + 1):
                 item = gfi(row)
-                for col in xrange(col0, col1 + 1):
+                for col in sm.range(col0, col1 + 1):
                     values.append(((rio(row), col),
                                    (item, cols[col].name)))
 
@@ -921,9 +924,9 @@ class TableEditor(Editor, BaseTableEditor):
         values = []
         for row0, col0 in tl:
             row1, col1 = br.next()
-            for row in xrange(row0, row1 + 1):
+            for row in sm.range(row0, row1 + 1):
                 item = gfi(row)
-                for col in xrange(col0, col1 + 1):
+                for col in sm.range(col0, col1 + 1):
                     values.append(((rio(row), col),
                                    (item, cols[col].name)))
 
@@ -1288,7 +1291,7 @@ class TableEditor(Editor, BaseTableEditor):
         """
         self._no_notify = True
 
-        for name, value in keywords.items():
+        for name, value in six.iteritems(keywords):
             setattr(self, name, value)
 
         self._no_notify = False

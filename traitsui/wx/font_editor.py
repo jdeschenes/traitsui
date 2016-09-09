@@ -35,10 +35,10 @@ from editor_factory \
     TextEditor as BaseTextEditor, \
     ReadonlyEditor as BaseReadonlyEditor
 
-from editor \
+from .editor \
     import Editor
 
-from helper \
+from .helper \
     import TraitsUIPanel, disconnect
 
 #-------------------------------------------------------------------------

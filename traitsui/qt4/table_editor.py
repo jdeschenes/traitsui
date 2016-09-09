@@ -15,6 +15,8 @@
 #-------------------------------------------------------------------------
 #  Imports:
 #-------------------------------------------------------------------------
+import six
+import six.moves as sm
 
 from pyface.qt import QtCore, QtGui
 
@@ -422,7 +424,7 @@ class TableEditor(Editor, BaseTableEditor):
         old = self._no_notify
         self._no_notify = True
         try:
-            for name, value in keywords.items():
+            for name, value in six.iteritems(keywords):
                 setattr(self, name, value)
         finally:
             self._no_notify = old
@@ -527,7 +529,7 @@ class TableEditor(Editor, BaseTableEditor):
         f = self.filter
         if f is None:
             self._filtered_cache = None
-            self.filtered_indices = range(num_items)
+            self.filtered_indices = list(sm.range(num_items))
             self.filter_summary = 'All %i items' % num_items
         else:
             if not callable(f):
@@ -549,7 +551,7 @@ class TableEditor(Editor, BaseTableEditor):
     def _get_image(self, image):
         """ Converts a user specified image to a QIcon.
         """
-        if isinstance(image, basestring):
+        if isinstance(image, six.string_types):
             self.image = image
             image = self.image
 
@@ -1099,7 +1101,7 @@ class TableView(QtGui.QTableView):
 
         # Compute sizes for columns with absolute or no size requests
         proportional = []
-        for column_index in xrange(len(editor.columns)):
+        for column_index in sm.range(len(editor.columns)):
             column = editor.columns[column_index]
             requested_width = column.get_width()
             if column.resize_mode in ("interactive", "stretch") \

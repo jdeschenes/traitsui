@@ -24,6 +24,8 @@ appear in the GUI's enumerated list are determined by the *cities* attribute of
 the view's handler, as specified in the EnumEditor's *name* parameter.
 """
 
+import six
+
 from traits.api import HasTraits, Str, Enum, List
 from traitsui.api import View, Item, Handler, EnumEditor
 
@@ -66,7 +68,7 @@ class Address(HasTraits):
     """
 
     street_address = Str
-    state = Enum(list(cities.keys())[0], list(cities.keys()))
+    state = Enum(list(six.iterkeys(cities))[0], list(six.iterkeys(cities)))
     city = Str
 
     view = View(

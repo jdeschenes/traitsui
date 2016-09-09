@@ -25,6 +25,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import (
     Any,
     Bool,
@@ -359,7 +361,7 @@ class View(ViewElement):
                 content.append(value)
             elif type(value) in SequenceTypes:
                 content.append(Group(*value))
-            elif (isinstance(value, basestring) and
+            elif (isinstance(value, six.string_types) and
                   (value[:1] == '<') and (value[-1:] == '>')):
                 # Convert string to an Include value:
                 content.append(Include(value[1:-1].strip()))

@@ -73,4 +73,4 @@ if __name__ == '__main__':
            'these', 'in', 'the', 'dudes', 'bar'])
 
     foo.configure_traits(kind='modal')
-    print foo.input, [word.word for word in foo.parsed]
+    print(foo.input, [word.word for word in foo.parsed])

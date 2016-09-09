@@ -21,6 +21,9 @@ PyQt user interface toolkit.
 from math \
     import log10
 
+import six
+import six.moves as sm
+
 from pyface.qt import QtCore, QtGui
 
 from traits.api \
@@ -32,16 +35,16 @@ from traits.api \
 from traitsui.editors.range_editor \
     import ToolkitEditorFactory
 
-from editor_factory \
+from .editor_factory \
     import TextEditor
 
-from editor \
+from .editor \
     import Editor
 
-from constants \
+from .constants \
     import OKColor, ErrorColor
 
-from helper \
+from .helper \
     import IconButton
 
 #-------------------------------------------------------------------------
@@ -205,12 +208,12 @@ class SimpleSliderEditor(BaseRangeEditor):
         """
         try:
             try:
-                value = eval(unicode(self.control.text.text()).strip())
+                value = eval(six.text_type(self.control.text.text()).strip())
             except Exception as ex:
                 # The entered something that didn't eval as a number, (e.g.,
                 # 'foo') pretend it didn't happen
                 value = self.value
-                self.control.text.setText(unicode(value))
+                self.control.text.setText(six.text_type(value))
 
             if not self.factory.is_float:
                 value = int(value)
@@ -485,7 +488,7 @@ class LargeRangeSliderEditor(BaseRangeEditor):
         """ Handles the user pressing the Enter key in the text field.
         """
         try:
-            self.value = eval(unicode(self.control.text.text()).strip())
+            self.value = eval(six.text_type(self.control.text.text()).strip())
         except TraitError as excp:
             pass
 
@@ -779,7 +782,7 @@ class RangeTextEditor(TextEditor):
         """ Handles the user entering input data in the edit control.
         """
         try:
-            value = eval(unicode(self.control.text()))
+            value = eval(six.text_type(self.control.text()))
             if self.evaluate is not None:
                 value = self.evaluate(value)
             self.value = value
@@ -813,8 +816,8 @@ def CustomEnumEditor(parent, factory, ui, object, name, description,
     if factory._enum is None:
         import traitsui.editors.enum_editor as enum_editor
         factory._enum = enum_editor.ToolkitEditorFactory(
-            values=range(factory.low, factory.high + 1),
-            cols=factory.cols)
+            values=list(sm.range(factory.low, factory.high + 1),
+            cols=factory.cols))
 
     if style == 'simple':
         return factory._enum.simple_editor(ui, object, name, description,

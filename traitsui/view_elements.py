@@ -30,6 +30,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import HasStrictTraits, List, Dict, Str, Int, Any, TraitError
 
 from .view_element import ViewElement
@@ -112,7 +114,7 @@ class ViewElements(HasStrictTraits):
         # Add each item in the search order which is of the right class and
         # which is not already in the result list:
         for ves in self._get_search_order():
-            for name, ve in ves.content.items():
+            for name, ve in six.iteritems(ves.content):
                 if isinstance(ve, klass) and (name not in result):
                     result.append(name)
 

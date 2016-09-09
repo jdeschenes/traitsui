@@ -22,4 +22,5 @@ from ._version import full_version as __version__
 __requires__ = [
     'traits',
     'pyface',
+    'six'
 ]

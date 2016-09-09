@@ -26,6 +26,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import (
     Any,
     Event,
@@ -181,7 +183,7 @@ class KeyBindings(HasPrivateTraits):
         """ Processes a keyboard event.
         """
         if isinstance(controllers, dict):
-            controllers = controllers.values()
+            controllers = list(six.itervalues(controllers))
         elif not isinstance(controllers, SequenceTypes):
             controllers = [controllers]
         else:

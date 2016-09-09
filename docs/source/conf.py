@@ -44,7 +44,8 @@ copyright = '2008-2016, Enthought'
 # Pull from the actual release number without imports
 d = {}
 try:
-    execfile(os.path.join('..', '..', 'traitsui', '_version.py'), d)
+    exec(compile(open(os.path.join('..', '..', 'traitsui', '_version.py')).read(),
+                 os.path.join('..', '..', 'traitsui', '_version.py'), 'exec'), d)
     release = d['version']
     version = '.'.join(d['version'].split('.', 2)[:2])
 

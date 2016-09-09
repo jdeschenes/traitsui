@@ -6,7 +6,7 @@ from traitsui.api import *
 
 
 def evaluate_value(v):
-    print 'evaluate_value', v
+    print('evaluate_value', v)
     return str(v)
 
 

@@ -21,6 +21,8 @@ import copy
 import collections
 import logging
 
+import six
+
 from pyface.qt import QtCore, QtGui
 
 from pyface.resource_manager import resource_manager
@@ -31,9 +33,9 @@ from traitsui.undo import ListUndoItem
 from traitsui.tree_node import ITreeNodeAdapterBridge
 from traitsui.menu import Menu, Action, Separator
 
-from clipboard import clipboard, PyMimeData
-from editor import Editor
-from helper import pixmap_cache
+from .clipboard import clipboard, PyMimeData
+from .editor import Editor
+from .helper import pixmap_cache
 
 logger = logging.getLogger(__name__)
 
@@ -207,7 +209,7 @@ class SimpleEditor(Editor):
         """
         try:
             tree = self._tree
-            if (not isinstance(selection, basestring) and
+            if (not isinstance(selection, six.string_types) and
                     isinstance(selection, collections.Iterable)):
 
                 item_selection = QtGui.QItemSelection()
@@ -604,14 +606,14 @@ class SimpleEditor(Editor):
             return QtGui.QIcon()
 
         icon_name = node.get_icon(object, is_expanded)
-        if isinstance(icon_name, basestring):
+        if isinstance(icon_name, six.string_types):
             icon = self.STD_ICON_MAP.get(icon_name)
 
             if icon is not None:
                 return self._tree.style().standardIcon(icon)
 
             path = node.get_icon_path(object)
-            if isinstance(path, basestring):
+            if isinstance(path, six.string_types):
                 path = [path, node]
             else:
                 path.append(node)
@@ -1475,7 +1477,7 @@ class SimpleEditor(Editor):
         except:
             return
 
-        new_label = unicode(nid.text(col))
+        new_label = six.text_type(nid.text(col))
         old_label = node.get_label(object)
 
         if new_label != old_label:

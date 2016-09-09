@@ -6,6 +6,9 @@
 #  under the conditions described in the aforementioned license.  The license
 #  is also available online at http://www.enthought.com/licenses/BSD.txt
 
+import six
+import six.moves as sm
+
 import nose
 import numpy as np
 from numpy.testing import assert_array_equal
@@ -13,7 +16,7 @@ from numpy.testing import assert_array_equal
 try:
     from pandas import DataFrame
 except ImportError as exc:
-    print "Can't import Pandas: skipping"
+    print("Can't import Pandas: skipping")
     raise nose.SkipTest
 
 from traits.api import HasTraits, Instance
@@ -70,7 +73,7 @@ def sample_data_numerical_index():
             [3, 4, 5],
             [6, 7, 8],
             [9, 10, 11]]
-    df = DataFrame(data, index=range(1, 5),
+    df = DataFrame(data, index=sm.range(1, 5),
                    columns=['X', 'Y', 'Z'])
     viewer = DataFrameViewer(data=df)
     return viewer

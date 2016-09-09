@@ -20,6 +20,7 @@
 #-------------------------------------------------------------------------
 #  Imports:
 #-------------------------------------------------------------------------
+import six
 
 from traits.api import Trait, TraitError
 from traits.trait_base import SequenceTypes
@@ -68,7 +69,7 @@ convert_to_color.info = (
 
 # RGB versions of standard colors:
 rgb_standard_colors = {}
-for name, color in standard_colors.items():
+for name, color in six.iteritems(standard_colors):
     rgb_standard_colors[name] = (color.redF(),
                                  color.greenF(),
                                  color.blueF())
@@ -87,7 +88,7 @@ for name, color in standard_colors.items():
 
 
 def get_rgb_color_editor(*args, **traits):
-    from rgb_color_editor import ToolkitEditorFactory
+    from .rgb_color_editor import ToolkitEditorFactory
     return ToolkitEditorFactory(*args, **traits)
 
 # Trait whose value must be an RGB color:

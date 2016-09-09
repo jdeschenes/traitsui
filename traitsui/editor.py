@@ -25,6 +25,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import (
     Any,
     Bool,
@@ -307,7 +309,7 @@ class Editor(HasPrivateTraits):
         if format_func is not None:
             return format_func(value)
 
-        return unicode(value)
+        return six.text_type(value)
 
     #-------------------------------------------------------------------------
     #  Returns the text representation of the object trait:
@@ -326,7 +328,7 @@ class Editor(HasPrivateTraits):
         """ Returns the text representation of a specified value.
         """
         # In Unicode!
-        return unicode(value)
+        return six.text_type(value)
 
     #-------------------------------------------------------------------------
     #  Handles an error that occurs while setting the object's trait value:

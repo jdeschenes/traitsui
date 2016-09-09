@@ -27,6 +27,8 @@ from __future__ import absolute_import
 
 from operator import itemgetter
 
+import six
+
 from traits.api import BaseTraitHandler, CTrait, Enum, TraitError
 
 from .ui_traits import SequenceTypes
@@ -82,12 +84,12 @@ def commatize(value):
 #-------------------------------------------------------------------------
 
 
-def enum_values_changed(values, strfunc=unicode):
+def enum_values_changed(values, strfunc=six.text_type):
     """ Recomputes the mappings for a new set of enumeration values.
     """
 
     if isinstance(values, dict):
-        data = [(strfunc(v), n) for n, v in values.items()]
+        data = [(strfunc(v), n) for n, v in six.iteritems(values)]
         if len(data) > 0:
             data.sort(key=itemgetter(0))
             col = data[0][0].find(':') + 1
@@ -100,7 +102,7 @@ def enum_values_changed(values, strfunc=unicode):
         if not isinstance(handler, BaseTraitHandler):
             raise TraitError("Invalid value for 'values' specified")
         if handler.is_mapped:
-            data = [(strfunc(n), n) for n in handler.map.keys()]
+            data = [(strfunc(n), n) for n in six.iterkeys(handler.map)]
             data.sort(key=itemgetter(0))
         else:
             data = [(strfunc(v), v) for v in handler.values]

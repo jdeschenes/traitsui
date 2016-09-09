@@ -22,18 +22,20 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+
 import wx
 
-from helper \
+from .helper \
     import restore_window, save_window, TraitsUIScrolledPanel
 
-from ui_base \
+from .ui_base \
     import BaseDialog
 
-from ui_panel \
+from .ui_panel \
     import panel, show_help
 
-from constants \
+from .constants \
     import DefaultTitle, WindowColor, screen_dy, scrollbar_dx
 
 from traitsui.menu \
@@ -256,7 +258,7 @@ class ModalDialog(BaseDialog):
         """ Creates a copy of a *context* dictionary.
         """
         result = {}
-        for name, value in context.items():
+        for name, value in six.iteritems(context):
             if value is not None:
                 result[name] = value.clone_traits()
             else:
@@ -271,7 +273,7 @@ class ModalDialog(BaseDialog):
     def _apply_context(self, from_context, to_context):
         """ Applies the traits in the *from_context* to the *to_context*.
         """
-        for name, value in from_context.items():
+        for name, value in six.iteritems(from_context):
             if value is not None:
                 to_context[name].copy_traits(value)
             else:

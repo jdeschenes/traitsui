@@ -27,6 +27,8 @@ from __future__ import absolute_import
 
 import re
 
+import six
+
 from traits.api import (Bool, Callable, Constant, Delegate, Float, Instance,
                         Range, Str, Undefined, Dict,)
 
@@ -275,7 +277,7 @@ class Item(ViewSubElement):
         if value is None:
             return
 
-        if not isinstance(value, basestring):
+        if not isinstance(value, six.string_types):
             raise TypeError(
                 "The argument to Item must be a string of the "
                 "form: [id:][object.[object.]*][name]['['label']']`tooltip`"
@@ -372,7 +374,7 @@ class Item(ViewSubElement):
         if tlabel is None:
             return label
 
-        if isinstance(tlabel, basestring):
+        if isinstance(tlabel, six.string_types):
             if tlabel[0:3] == '...':
                 return label + tlabel[3:]
             if tlabel[-3:] == '...':

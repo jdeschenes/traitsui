@@ -24,6 +24,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import Bool, Str, Event, Property
 
 from ..editor import Editor
@@ -83,7 +85,7 @@ class _ShellEditor(Editor):
                 object.on_trait_change(self.update_any, dispatch='ui')
             else:
                 self._base_locals = locals = {}
-                for name in self._shell.interpreter().locals.keys():
+                for name in six.iterkeys(self._shell.interpreter().locals):
                     locals[name] = None
 
         # Synchronize any editor events:
@@ -113,10 +115,10 @@ class _ShellEditor(Editor):
                         pass
         else:
             dic = self.value
-            for name in locals.keys():
+            for name, value in six.iteritems(locals):
                 if name not in base_locals:
                     try:
-                        dic[name] = locals[name]
+                        dic[name] = value
                     except:
                         pass
 
@@ -143,7 +145,7 @@ class _ShellEditor(Editor):
                     locals[name] = getattr(object, name, None)
             else:
                 dic = self.value
-                for name, value in dic.items():
+                for name, value in six.iteritems(dic):
                     locals[name] = value
 
     #-------------------------------------------------------------------------

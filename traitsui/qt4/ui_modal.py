@@ -14,15 +14,17 @@
 """
 
 
+import six
+
 from pyface.qt import QtCore, QtGui
 
 from traitsui.menu \
     import ApplyButton, RevertButton, OKButton, CancelButton, HelpButton
 
-from ui_base \
+from .ui_base \
     import BaseDialog
 
-from ui_panel \
+from .ui_panel \
     import panel
 
 
@@ -175,7 +177,7 @@ class _ModalDialog(BaseDialog):
         """Creates a copy of a *context* dictionary.
         """
         result = {}
-        for name, value in context.items():
+        for name, value in six.iteritems(context):
             if value is not None:
                 result[name] = value.clone_traits()
             else:
@@ -186,7 +188,7 @@ class _ModalDialog(BaseDialog):
     def _apply_context(self, from_context, to_context):
         """Applies the traits in the *from_context* to the *to_context*.
         """
-        for name, value in from_context.items():
+        for name, value in six.iteritems(from_context):
             if value is not None:
                 to_context[name].copy_traits(value)
             else:

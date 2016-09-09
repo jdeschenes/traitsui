@@ -18,6 +18,8 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+
 from pyface.qt import QtCore, QtGui
 
 from traits.api \
@@ -41,13 +43,13 @@ from traitsui.handler \
 from traitsui.instance_choice \
     import InstanceChoiceItem
 
-from editor \
+from .editor \
     import Editor
 
-from constants \
+from .constants \
     import DropColor
 
-from helper \
+from .helper \
     import position_window
 
 #-------------------------------------------------------------------------
@@ -293,7 +295,7 @@ class CustomEditor(Editor):
     def update_object(self, text):
         """ Handles the user selecting a new value from the combo box.
         """
-        name = unicode(text)
+        name = six.text_type(text)
         for item in self.items:
             if name == item.get_name():
                 id_item = id(item)

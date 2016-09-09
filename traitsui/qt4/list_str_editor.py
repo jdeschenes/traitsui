@@ -22,6 +22,8 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+
 from pyface.qt import QtCore, QtGui
 import collections
 
@@ -30,8 +32,8 @@ from traits.api import Any, Bool, Event, Int, Instance, List, \
     Property, Str, TraitListEvent, NO_COMPARE
 from traitsui.list_str_adapter import ListStrAdapter
 
-from editor import Editor
-from list_str_model import ListStrModel
+from .editor import Editor
+from .list_str_model import ListStrModel
 from traitsui.menu import Menu
 
 #-------------------------------------------------------------------------
@@ -228,7 +230,7 @@ class _ListStrEditor(Editor):
         old = self._no_notify
         self._no_notify = True
         try:
-            for name, value in keywords.items():
+            for name, value in six.iteritems(keywords):
                 setattr(self, name, value)
         finally:
             self._no_notify = old

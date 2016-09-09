@@ -25,6 +25,9 @@
 
 import os
 
+import six
+import six.moves as sm
+
 from pyface.qt import QtCore, QtGui
 
 from pyface.image_resource import ImageResource
@@ -35,8 +38,8 @@ from traits.api import (Any, Bool, Callable, Event, HasStrictTraits, Instance,
 from traitsui.tabular_adapter import TabularAdapter
 from traitsui.ui_traits import Image
 
-from editor import Editor
-from tabular_model import TabularModel
+from .editor import Editor
+from .tabular_model import TabularModel
 
 
 TRAITS_DEBUG = (os.getenv('TRAITS_DEBUG') is not None)
@@ -288,7 +291,7 @@ class TabularEditor(Editor):
         old = self._no_notify
         self._no_notify = True
         try:
-            for name, value in keywords.items():
+            for name, value in six.iteritems(keywords):
                 setattr(self, name, value)
         finally:
             self._no_notify = old
@@ -304,14 +307,14 @@ class TabularEditor(Editor):
         cws = prefs.get('cached_widths')
         num_columns = len(self.adapter.columns)
         if cws is not None and num_columns == len(cws):
-            for column in xrange(num_columns):
+            for column in sm.range(num_columns):
                 self.control.setColumnWidth(column, cws[column])
 
     def save_prefs(self):
         """ Returns any user preference information associated with the editor.
         """
         widths = [self.control.columnWidth(column)
-                  for column in xrange(len(self.adapter.columns))]
+                  for column in sm.range(len(self.adapter.columns))]
         return {'cached_widths': widths}
 
     #-------------------------------------------------------------------------
@@ -331,7 +334,7 @@ class TabularEditor(Editor):
     def _get_image(self, image):
         """ Converts a user specified image to a QIcon.
         """
-        if isinstance(image, basestring):
+        if isinstance(image, six.string_types):
             self.image = image
             image = self.image
 
@@ -730,7 +733,7 @@ class _TableView(QtGui.QTableView):
         sh = QtGui.QTableView.sizeHint(self)
 
         width = 0
-        for column in xrange(len(self._editor.adapter.columns)):
+        for column in sm.range(len(self._editor.adapter.columns)):
             width += self.sizeHintForColumn(column)
         sh.setWidth(width)
 
@@ -781,7 +784,7 @@ class _TableView(QtGui.QTableView):
 
         # Assign sizes for columns with absolute size requests
         percent_vals, percent_cols = [], []
-        for column in xrange(len(editor.adapter.columns)):
+        for column in sm.range(len(editor.adapter.columns)):
             width = editor.adapter.get_width(
                 editor.object, editor.name, column)
             if width > 1:

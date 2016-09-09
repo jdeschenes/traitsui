@@ -23,9 +23,12 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+import six.moves as sm
+
 from pyface.qt import QtCore, QtGui
 
-from editor import Editor
+from .editor import Editor
 
 #-------------------------------------------------------------------------
 #  '_HistoryEditor' class:
@@ -67,7 +70,7 @@ class _HistoryEditor(Editor):
         """ Handles the user entering input data in the edit control.
         """
         if not self._no_update:
-            self.value = unicode(text)
+            self.value = six.text_type(text)
 
     def update_editor(self):
         """ Updates the editor when the object trait changes externally to the
@@ -97,7 +100,7 @@ class _HistoryEditor(Editor):
         """ Returns any user preference information associated with the editor.
         """
         history = [str(self.control.itemText(index))
-                   for index in xrange(self.control.count())]
+                   for index in sm.range(self.control.count())]
 
         # If the view closed successfully, update the history with the current
         # editor value, as long it is different from the current object value:
@@ -118,5 +121,5 @@ class _HistoryEditor(Editor):
         """
         diff = self.control.count() - self.factory.entries
         if diff > 0:
-            for i in xrange(diff):
+            for i in sm.range(diff):
                 self.control.removeItem(self.factory.entries)

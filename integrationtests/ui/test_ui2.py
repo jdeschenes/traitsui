@@ -56,7 +56,7 @@ class PersonHandler(Handler):
             obj.state = 'Texas'
 
     def object_call_changed(self, info):
-        print 'You called?'
+        print('You called?')
 
 #-------------------------------------------------------------------------
 #  'WizardHandler' class:

@@ -23,6 +23,8 @@
 #-------------------------------------------------------------------------
 #  Imports:
 #-------------------------------------------------------------------------
+import six
+import six.moves as sm
 
 import wx
 
@@ -38,10 +40,10 @@ from traits.api \
 from pyface.image_resource \
     import ImageResource
 
-from constants \
+from .constants \
     import WindowColor
 
-from constants import is_mac
+from .constants import is_mac
 import traitsui.wx.constants
 
 #-------------------------------------------------------------------------
@@ -261,7 +263,7 @@ class ImageSlice(HasPrivateTraits):
         max_diff = 0.10 * dx
         while y < last:
             y_data = data[y]
-            for y2 in xrange(y + 1, dy):
+            for y2 in sm.range(y + 1, dy):
                 if abs(y_data - data[y2]).sum() > max_diff:
                     break
 
@@ -290,7 +292,7 @@ class ImageSlice(HasPrivateTraits):
         max_diff = 0.10 * dy
         while x < last:
             x_data = data[:, x]
-            for x2 in xrange(x + 1, dx):
+            for x2 in sm.range(x + 1, dx):
                 if abs(x_data - data[:, x2]).sum() > max_diff:
                     break
 

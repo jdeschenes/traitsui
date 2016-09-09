@@ -23,8 +23,13 @@
 #-------------------------------------------------------------------------
 
 import os
+
+import six
+
 import wx
 import copy
+
+
 
 try:
     from pyface.wx.drag_and_drop import PythonDropSource, \
@@ -68,13 +73,13 @@ from pyface.api \
 from pyface.dock.api \
     import DockWindow, DockSizer, DockSection, DockRegion, DockControl
 
-from constants \
+from .constants \
     import OKColor
 
-from editor \
+from .editor \
     import Editor
 
-from helper \
+from .helper \
     import open_fbi, TraitsUIPanel, TraitsUIScrolledPanel
 
 #-------------------------------------------------------------------------
@@ -697,7 +702,7 @@ class SimpleEditor(Editor):
             return -1
 
         icon_name = node.get_icon(object, is_expanded)
-        if isinstance(icon_name, basestring):
+        if isinstance(icon_name, six.string_types):
             if icon_name[:1] == '@':
                 self._icon = icon_name
                 icon_name = self._icon
@@ -707,7 +712,7 @@ class SimpleEditor(Editor):
                     path = self
                 else:
                     path = node.get_icon_path(object)
-                    if isinstance(path, basestring):
+                    if isinstance(path, six.string_types):
                         path = [path, node]
                     else:
                         path.append(node)

@@ -51,7 +51,7 @@ class Foo(HasTraits):
         self.dates["slow"] = self.slow_dates
 
     def _current_date_changed(self, old, new):
-        print "Old:", old, "New:", new
+        print("Old:", old, "New:", new)
 
 
 def main():

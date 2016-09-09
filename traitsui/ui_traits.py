@@ -24,6 +24,8 @@
 
 from __future__ import absolute_import
 
+import six
+
 from traits.api import (
     Any,
     Delegate,
@@ -145,7 +147,7 @@ class ViewStatus(TraitType):
     def validate(self, object, name, value):
         """ Validates that a specified value is valid for this trait.
         """
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             return [StatusItem(name=value)]
 
         if isinstance(value, StatusItem):
@@ -157,7 +159,7 @@ class ViewStatus(TraitType):
         result = []
         if isinstance(value, SequenceTypes):
             for item in value:
-                if isinstance(item, basestring):
+                if isinstance(item, six.string_types):
                     result.append(StatusItem(name=item))
                 elif isinstance(item, StatusItem):
                     result.append(item)
@@ -181,7 +183,7 @@ def convert_image(value, level=3):
     """
     global image_resource_cache
 
-    if not isinstance(value, basestring):
+    if not isinstance(value, six.string_types):
         return value
 
     key = value
@@ -274,7 +276,7 @@ class Image(TraitType):
 def convert_theme(value, level=3):
     """ Converts a specified value to a Theme if possible.
     """
-    if not isinstance(value, basestring):
+    if not isinstance(value, six.string_types):
         return value
 
     if (value[:1] == '@') and (value.find(':') >= 2):

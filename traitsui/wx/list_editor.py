@@ -22,6 +22,9 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+import six
+import six.moves as sm
+
 import wx
 
 import wx.lib.scrolledpanel as wxsp
@@ -44,16 +47,16 @@ from traitsui.dockable_view_element \
 from pyface.dock.api \
     import DockWindow, DockSizer, DockSection, DockRegion, DockControl
 
-from constants \
+from .constants \
     import scrollbar_dx
 
-from editor \
+from .editor \
     import Editor
 
-from menu \
+from .menu \
     import MakeMenu
 
-from image_control \
+from .image_control \
     import ImageControl
 
 #-------------------------------------------------------------------------
@@ -322,7 +325,7 @@ class SimpleEditor(Editor):
             pairs.
         """
         sizer = self.control.GetSizer()
-        for i in xrange(2 * len(controls) + extra):
+        for i in sm.range(2 * len(controls) + extra):
             sizer.Remove(0)
         index = 0
         for control, pcontrol in controls:
@@ -752,7 +755,7 @@ class NotebookEditor(Editor):
                     name = handler(self.ui.info, user_object)
 
                 if name is None:
-                    name = unicode(
+                    name = six.text_type(
                         xgetattr(
                             view_object,
                             self.factory.page_name[
@@ -799,7 +802,7 @@ class NotebookEditor(Editor):
                 if handler_name is not None:
                     name = handler_name
                 else:
-                    name = unicode(name) or u'???'
+                    name = six.text_type(name) or u'???'
                 view_object.on_trait_change(self.update_page_name,
                                             page_name[1:], dispatch='ui')
             else:

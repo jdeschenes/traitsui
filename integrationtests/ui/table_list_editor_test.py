@@ -91,5 +91,5 @@ if __name__ == '__main__':
     tt = TableTest(people=people)
     tt.configure_traits()
     for p in tt.people:
-        print p
-        print '--------------'
+        print(p)
+        print('--------------')
