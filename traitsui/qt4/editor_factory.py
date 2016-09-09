@@ -17,6 +17,7 @@ Traits-based user interface.
 #-------------------------------------------------------------------------
 #  Imports:
 #-------------------------------------------------------------------------
+import warnings
 
 import six
 
@@ -28,7 +29,7 @@ from traits.api \
 from traitsui.editor_factory \
     import EditorFactory as BaseEditorFactory
 
-from editor \
+from .editor \
     import Editor
 
 #-------------------------------------------------------------------------

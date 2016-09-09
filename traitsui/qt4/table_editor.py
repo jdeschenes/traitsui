@@ -34,8 +34,8 @@ from traitsui.editors.table_editor import BaseTableEditor, \
     ReversedList, ToolkitEditorFactory, customize_filter
 from traitsui.ui_traits import SequenceTypes, Image
 
-from editor import Editor
-from table_model import TableModel, SortFilterTableModel
+from .editor import Editor
+from .table_model import TableModel, SortFilterTableModel
 
 #-------------------------------------------------------------------------
 #  'TableEditor' class:

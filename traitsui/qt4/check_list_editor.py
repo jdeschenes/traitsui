@@ -35,10 +35,10 @@ from traits.api \
 from traitsui.editors.check_list_editor \
     import ToolkitEditorFactory
 
-from editor_factory \
+from .editor_factory \
     import TextEditor as BaseTextEditor
 
-from editor \
+from .editor \
     import EditorWithList
 
 logger = logging.getLogger(__name__)

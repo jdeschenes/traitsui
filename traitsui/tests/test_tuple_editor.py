@@ -40,6 +40,7 @@ class TestTupleEditor(UnittestTools, unittest.TestCase):
     def test_value_update(self):
         # Regression test for #179
         model = DummyModel()
+        ui = None
         try:
             ui = model.edit_traits()
             with self.assertTraitChanges(model, 'data', count=1):

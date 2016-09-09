@@ -228,7 +228,8 @@ class ToolkitEditorFactory(EditorFactory):
             return toolkit_object('range_editor:RangeTextEditor')
 
         if self.mode != 'auto':
-            return toolkit_object('range_editor:SimpleEditorMap')[self.mode]
+            obj = toolkit_object('range_editor:SimpleEditorMap')
+            return obj[self.mode]
 
         if is_float and (abs(high - low) > 100):
             return toolkit_object('range_editor:LargeRangeSliderEditor')
