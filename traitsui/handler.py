@@ -25,6 +25,9 @@
 
 from __future__ import absolute_import
 
+import six
+
+
 from .toolkit import toolkit
 
 from .help import on_help_call
@@ -308,7 +311,7 @@ class Handler(HasPrivateTraits):
             if result is not None:
                 return result
             method = getattr(self, 'trait_view_for_%s' % name, None)
-            if callable(method):
+            if six.callable(method):
                 result = method(info, object)
                 if result is not None:
                     return result

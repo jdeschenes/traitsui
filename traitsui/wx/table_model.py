@@ -25,6 +25,8 @@
 
 import logging
 
+import six
+
 import wx
 
 import wx.grid as wxg
@@ -551,7 +553,7 @@ class TableModel(GridModel):
             format = formats.get(type(value))
             if format is not None:
                 try:
-                    if callable(format):
+                    if six.callable(format):
                         value = format(value)
                     else:
                         value = format % value
@@ -818,7 +820,7 @@ class TableModel(GridModel):
                 nitems = [nitem for nitem in enumerate(items)]
                 self.filter_summary = 'All %s items' % len(nitems)
             else:
-                if not callable(filter):
+                if not six.callable(filter):
                     filter = filter.filter
                 nitems = [nitem for nitem in enumerate(items)
                           if filter(nitem[1])]

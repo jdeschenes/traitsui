@@ -372,7 +372,8 @@ class TabularModel(QtCore.QAbstractTableModel):
         # Update the selection for the new location.
         if editor.factory.multi_select:
             editor.setx(multi_selected=objects)
-            editor.multi_selected_rows = range(new_row, new_row + len(objects))
+            editor.multi_selected_rows = list(sm.range(new_row,
+                                                       new_row + len(objects)))
         else:
             editor.setx(selected=objects[0])
             editor.selected_row = new_row

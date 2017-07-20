@@ -33,20 +33,13 @@ from traits.api import HasTraits, Instance, Property
 #  'PyMimeData' class:
 #-------------------------------------------------------------------------
 
-if sys.version_info[0] < 3:
-    def str2bytes(s):
-        return s
-else:
-    def str2bytes(s):
-        return bytes(s, 'ascii')
-
 
 class PyMimeData(QtCore.QMimeData):
     """ The PyMimeData wraps a Python instance as MIME data.
     """
     # The MIME type for instances.
-    MIME_TYPE = u'application/x-ets-qt4-instance'
-    NOPICKLE_MIME_TYPE = u'application/x-ets-qt4-instance-no-pickle'
+    MIME_TYPE = six.u('application/x-ets-qt4-instance')
+    NOPICKLE_MIME_TYPE = six.u('application/x-ets-qt4-instance-no-pickle')
 
     def __init__(self, data=None, pickle=True):
         """ Initialise the instance.
@@ -70,10 +63,10 @@ class PyMimeData(QtCore.QMimeData):
                         ("Could not pickle dragged object %s, " + "using %s mimetype instead") %
                         (repr(data), self.NOPICKLE_MIME_TYPE), RuntimeWarning)
                     self.setData(self.NOPICKLE_MIME_TYPE,
-                                 str2bytes(str(id(data))))
+                                 six.b(str(id(data))))
 
         else:
-            self.setData(self.NOPICKLE_MIME_TYPE, str2bytes(str(id(data))))
+            self.setData(self.NOPICKLE_MIME_TYPE, six.b(str(id(data))))
 
     @classmethod
     def coerce(cls, md):

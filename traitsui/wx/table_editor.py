@@ -759,7 +759,7 @@ class TableEditor(Editor, BaseTableEditor):
         # Get the row items and indices in the selection:
         values = []
         for row0, col0 in tl:
-            row1, col1 = br.next()
+            row1, col1 = six.next(br)
             for row in sm.range(row0, row1 + 1):
                 if row < rows:
                     values.append((rio(row), gfi(row)))
@@ -796,7 +796,7 @@ class TableEditor(Editor, BaseTableEditor):
         # Get the row items and indices in the selection:
         values = []
         for row0, col0 in tl:
-            row1, col1 = br.next()
+            row1, col1 = six.next(br)
             for row in sm.range(row0, row1 + 1):
                 if row < rows:
                     values.append((rio(row), gfi(row)))
@@ -826,7 +826,7 @@ class TableEditor(Editor, BaseTableEditor):
         # Get the column items and indices in the selection:
         values = []
         for row0, col0 in tl:
-            row1, col1 = br.next()
+            row1, col1 = six.next(br)
             for col in sm.range(col0, col1 + 1):
                 values.append((col, cols[col].name))
 
@@ -855,7 +855,7 @@ class TableEditor(Editor, BaseTableEditor):
         # Get the column items and indices in the selection:
         values = []
         for row0, col0 in tl:
-            row1, col1 = br.next()
+            row1, col1 = six.next(br)
             for col in sm.range(col0, col1 + 1):
                 values.append((col, cols[col].name))
 
@@ -886,7 +886,7 @@ class TableEditor(Editor, BaseTableEditor):
         # Get the column items and indices in the selection:
         values = []
         for row0, col0 in tl:
-            row1, col1 = br.next()
+            row1, col1 = six.next(br)
             for row in sm.range(row0, row1 + 1):
                 item = gfi(row)
                 for col in sm.range(col0, col1 + 1):
@@ -923,7 +923,7 @@ class TableEditor(Editor, BaseTableEditor):
         # Get the column items and indices in the selection:
         values = []
         for row0, col0 in tl:
-            row1, col1 = br.next()
+            row1, col1 = six.next(br)
             for row in sm.range(row0, row1 + 1):
                 item = gfi(row)
                 for col in sm.range(col0, col1 + 1):
@@ -1031,7 +1031,7 @@ class TableEditor(Editor, BaseTableEditor):
                     delete.enabled = True
 
                 deletable = self.factory.deletable
-                if delete.enabled and callable(deletable):
+                if delete.enabled and six.callable(deletable):
                     delete.enabled = reduce(
                         lambda l, r: l and r, [
                             deletable(item) for item in self.selected_items], True)

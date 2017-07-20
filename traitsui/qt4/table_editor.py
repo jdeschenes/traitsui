@@ -451,6 +451,8 @@ class TableEditor(Editor, BaseTableEditor):
         # Selection mode is 'row' or 'rows'
         if mode.startswith('row'):
             flags |= QtGui.QItemSelectionModel.Rows
+            # This is valid in both Python 2 and 3 since this is a custom
+            # method of the class
             items = self.items()
             for obj in objects:
                 try:
@@ -469,6 +471,8 @@ class TableEditor(Editor, BaseTableEditor):
 
         # Selection mode is 'cell' or 'cells'
         else:
+            # This is valid in both Python 2 and 3 since this is a custom
+            # method of the class
             items = self.items()
             for obj, name in objects:
                 try:
@@ -522,7 +526,8 @@ class TableEditor(Editor, BaseTableEditor):
 
     def _update_filtering(self):
         """Update the filter summary and the filtered indices."""
-
+        # This is valid in both Python 2 and 3 since this is a custom
+        # method of the class
         items = self.items()
         num_items = len(items)
 
@@ -532,7 +537,7 @@ class TableEditor(Editor, BaseTableEditor):
             self.filtered_indices = list(sm.range(num_items))
             self.filter_summary = 'All %i items' % num_items
         else:
-            if not callable(f):
+            if not six.callable(f):
                 f = f.filter
             self._filtered_cache = fc = [f(item) for item in items]
             self.filtered_indices = fi = [i for i, ok in enumerate(fc) if ok]
@@ -643,7 +648,8 @@ class TableEditor(Editor, BaseTableEditor):
 
     def _on_row_selection(self, added, removed):
         """Handle the row selection being changed."""
-
+        # This is valid in both Python 2 and 3 since this is a custom
+        # method of the class
         items = self.items()
         indexes = self.table_view.selectionModel().selectedRows()
         if len(indexes):
@@ -657,7 +663,8 @@ class TableEditor(Editor, BaseTableEditor):
 
     def _on_rows_selection(self, added, removed):
         """Handle the rows selection being changed."""
-
+        # This is valid in both Python 2 and 3 since this is a custom
+        # method of the class
         items = self.items()
         indexes = self.table_view.selectionModel().selectedRows()
         selected = [items[self.model.mapToSource(index).row()]
@@ -691,7 +698,8 @@ class TableEditor(Editor, BaseTableEditor):
 
     def _on_cell_selection(self, added, removed):
         """Handle the cell selection being changed."""
-
+        # This is valid in both Python 2 and 3 since this is a custom
+        # method of the class
         items = self.items()
         indexes = self.table_view.selectionModel().selectedIndexes()
         if len(indexes):
@@ -708,7 +716,8 @@ class TableEditor(Editor, BaseTableEditor):
 
     def _on_cells_selection(self, added, removed):
         """Handle the cells selection being changed."""
-
+        # This is valid in both Python 2 and 3 since this is a custom
+        # method of the class
         items = self.items()
         indexes = self.table_view.selectionModel().selectedIndexes()
         selected = []
@@ -726,6 +735,8 @@ class TableEditor(Editor, BaseTableEditor):
 
         index = self.model.mapToSource(index)
         column = self.columns[index.column()]
+        # This is valid in both Python 2 and 3 since this is a custom
+        # method of the class
         obj = self.items()[index.row()]
 
         # Fire the same event on the editor after mapping it to a model object
@@ -740,6 +751,8 @@ class TableEditor(Editor, BaseTableEditor):
 
         index = self.model.mapToSource(index)
         column = self.columns[index.column()]
+        # This is valid in both Python 2 and 3 since this is a custom
+        # method of the class
         obj = self.items()[index.row()]
 
         # Fire the same event on the editor after mapping it to a model object

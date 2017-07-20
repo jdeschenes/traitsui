@@ -2,6 +2,7 @@
 from itertools import chain
 
 import six
+import six.moves as sm
 
 from pyface.qt import QtCore, QtGui
 from pyface.qt.QtGui import QFont
@@ -42,7 +43,7 @@ class CustomEditor(DateCustomEditor):
         # way to handle this is to reset the text formats of all the dates
         # in the old dict, and then set the dates in the new dict.
         if old:
-            [map(self._reset_formatting, dates) for dates in six.itervalues(old)]
+            [list(sm.map(self._reset_formatting, dates) for dates in six.itervalues(old))]
         if new:
             styles = getattr(self.object, self.factory.styles_trait, None)
             self._apply_styles(styles, new)
@@ -55,14 +56,14 @@ class CustomEditor(DateCustomEditor):
         self._apply_styles(styles, groups_to_set)
 
         # Handle the removed items by resetting them
-        [map(self._reset_formatting, dates)
+        [sm.map(self._reset_formatting, dates)
          for dates in six.itervalues(event.removed)]
 
     def _styles_changed(self, old, new):
         groups = getattr(self.object, self.factory.dates_trait, {})
         if not new:
             # If no new styles, then reset all the dates to a default style
-            [map(self._reset_formatting, dates) for dates in six.itervalues(groups)]
+            [sm.map(self._reset_formatting, dates) for dates in six.itervalues(groups)]
         else:
             self._apply_styles(new, groups)
         return

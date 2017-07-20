@@ -758,9 +758,8 @@ class NotebookEditor(Editor):
                     name = six.text_type(
                         xgetattr(
                             view_object,
-                            self.factory.page_name[
-                                1:],
-                            u'???'))
+                            self.factory.page_name[1:],
+                            six.u('???')))
 
                 changed |= (dock_control.name != name)
                 dock_control.name = name
@@ -802,7 +801,7 @@ class NotebookEditor(Editor):
                 if handler_name is not None:
                     name = handler_name
                 else:
-                    name = six.text_type(name) or u'???'
+                    name = six.text_type(name) or six.u('???')
                 view_object.on_trait_change(self.update_page_name,
                                             page_name[1:], dispatch='ui')
             else:

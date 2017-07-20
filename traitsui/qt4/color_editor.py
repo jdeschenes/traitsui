@@ -119,7 +119,7 @@ class SimpleColorEditor(BaseSimpleEditor):
         color = QtGui.QColorDialog.getColor(
             color,
             self.control,
-            u'Select Color',
+            six.u('Select Color'),
             options,
         )
 

@@ -376,12 +376,12 @@ class UI(HasPrivateTraits):
             handler = context.get('handler')
             if handler is not None:
                 method = getattr(handler, include.id, None)
-                if callable(method):
+                if six.callable(method):
                     result = method()
 
             if (result is None) and (object is not None):
                 method = getattr(object, include.id, None)
-                if callable(method):
+                if six.callable(method):
                     result = method()
 
         return result
@@ -774,7 +774,7 @@ class UI(HasPrivateTraits):
         if function is None:
             return None
 
-        if callable(function):
+        if six.callable(function):
             return function(*args, **kw_args)
 
         context = self.context.copy()
