@@ -48,6 +48,7 @@ A line beginning with a hyphen (-) is interpreted as a menu separator.
 #=========================================================================
 #  Imports:
 #=========================================================================
+from __future__ import print_function
 
 import wx
 import re

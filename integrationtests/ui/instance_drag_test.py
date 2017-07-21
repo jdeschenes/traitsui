@@ -16,6 +16,7 @@
 #-------------------------------------------------------------------------
 #  Imports:
 #-------------------------------------------------------------------------
+from __future__ import print_function
 
 from traits.api \
     import HasTraits, Str, Regex, List, Instance

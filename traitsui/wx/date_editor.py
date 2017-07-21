@@ -22,6 +22,8 @@ Future Work
 The class needs to be extend to provide the four basic editor types,
 Simple, Custom, Text, and ReadOnly.
 """
+from __future__ import print_function
+
 import datetime
 
 import wx

@@ -75,6 +75,7 @@ commands for each task. See the EDM documentation for more information about
 how to run commands within an EDM enviornment.
 
 """
+from __future__ import print_function
 
 import glob
 import os
@@ -288,7 +289,7 @@ def do_in_tempdir(files=(), capture_files=()):
 
 def execute(commands, parameters):
     for command in commands:
-        print "[EXECUTING]", command.format(**parameters)
+        print("[EXECUTING]", command.format(**parameters))
         try:
             subprocess.check_call(command.format(**parameters).split())
         except subprocess.CalledProcessError:

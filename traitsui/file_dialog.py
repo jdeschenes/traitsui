@@ -23,7 +23,7 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 
 from os import R_OK, W_OK, access, mkdir
 

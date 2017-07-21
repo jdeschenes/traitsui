@@ -14,6 +14,7 @@
 #-------------------------------------------------------------------------
 #  Imports:
 #-------------------------------------------------------------------------
+from __future__ import print_function
 
 from traits.api \
     import HasStrictTraits, Str, Int, Regex, List

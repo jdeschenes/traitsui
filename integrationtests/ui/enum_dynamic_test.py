@@ -1,5 +1,6 @@
 #  Copyright (c) 2007, Enthought, Inc.
 #  License: BSD Style.
+from __future__ import print_function
 
 from traits.api import *
 from traitsui.api import *

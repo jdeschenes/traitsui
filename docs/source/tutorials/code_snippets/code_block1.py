@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from traits.api import *
 from traitsui.api import *
 
