@@ -23,26 +23,23 @@
 #  Imports:
 #-------------------------------------------------------------------------
 
+from __future__ import absolute_import
+
 import os
 
 import six
 import six.moves as sm
 
 from pyface.qt import QtCore, QtGui
-
 from pyface.image_resource import ImageResource
+from pyface.ui_traits import Image
 
 from traits.api import (Any, Bool, Callable, Event, HasStrictTraits, Instance,
                         Int, List, NO_COMPARE, Property, TraitListEvent)
 
 from traitsui.tabular_adapter import TabularAdapter
-from traitsui.ui_traits import Image
-
 from .editor import Editor
 from .tabular_model import TabularModel
-
-
-TRAITS_DEBUG = (os.getenv('TRAITS_DEBUG') is not None)
 
 
 class HeaderEventFilter(QtCore.QObject):
@@ -167,13 +164,12 @@ class TabularEditor(Editor):
             slot = self._on_rows_selection
         else:
             slot = self._on_row_selection
-        signal = 'selectionChanged(QItemSelection,QItemSelection)'
-        QtCore.QObject.connect(self.control.selectionModel(),
-                               QtCore.SIGNAL(signal), slot)
+        selection_model = self.control.selectionModel()
+        selection_model.selectionChanged.connect(slot)
 
         # Synchronize other interesting traits as necessary:
-        self.sync_value(factory.update, 'update', 'from')
-        self.sync_value(factory.refresh, 'refresh', 'from')
+        self.sync_value(factory.update, 'update', 'from', is_event=True)
+        self.sync_value(factory.refresh, 'refresh', 'from', is_event=True)
         self.sync_value(factory.activated, 'activated', 'to')
         self.sync_value(factory.activated_row, 'activated_row', 'to')
         self.sync_value(factory.clicked, 'clicked', 'to')
@@ -185,26 +181,19 @@ class TabularEditor(Editor):
             factory.column_right_clicked,
             'column_right_clicked',
             'to')
-        self.sync_value(factory.scroll_to_row, 'scroll_to_row', 'from')
+        self.sync_value(factory.scroll_to_row, 'scroll_to_row', 'from',
+                        is_event=True)
 
         # Connect other signals as necessary
-        signal = QtCore.SIGNAL('activated(QModelIndex)')
-        QtCore.QObject.connect(control, signal, self._on_activate)
-        signal = QtCore.SIGNAL('clicked(QModelIndex)')
-        QtCore.QObject.connect(control, signal, self._on_click)
-        signal = QtCore.SIGNAL('clicked(QModelIndex)')
-        QtCore.QObject.connect(control, signal, self._on_right_click)
-        signal = QtCore.SIGNAL('doubleClicked(QModelIndex)')
-        QtCore.QObject.connect(control, signal, self._on_dclick)
-        signal = QtCore.SIGNAL('sectionClicked(int)')
-        QtCore.QObject.connect(
-            control.horizontalHeader(),
-            signal,
+        control.activated.connect(self._on_activate)
+        control.clicked.connect(self._on_click)
+        control.clicked.connect(self._on_right_click)
+        control.doubleClicked.connect(self._on_dclick)
+        control.horizontalHeader().sectionClicked.connect(
             self._on_column_click)
 
         control.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        signal = QtCore.SIGNAL('customContextMenuRequested(QPoint)')
-        QtCore.QObject.connect(control, signal, self._on_context_menu)
+        control.customContextMenuRequested.connect(self._on_context_menu)
 
         self.header_event_filter = HeaderEventFilter(self)
         control.horizontalHeader().installEventFilter(self.header_event_filter)
@@ -260,7 +249,8 @@ class TabularEditor(Editor):
             editor.
         """
         if not self._no_update:
-            self.model.reset()
+            self.model.beginResetModel()
+            self.model.endResetModel()
             if self.factory.multi_select:
                 self._multi_selected_changed(self.multi_selected)
             else:
@@ -307,14 +297,14 @@ class TabularEditor(Editor):
         cws = prefs.get('cached_widths')
         num_columns = len(self.adapter.columns)
         if cws is not None and num_columns == len(cws):
-            for column in sm.range(num_columns):
+            for column in sm.xrange(num_columns):
                 self.control.setColumnWidth(column, cws[column])
 
     def save_prefs(self):
         """ Returns any user preference information associated with the editor.
         """
         widths = [self.control.columnWidth(column)
-                  for column in sm.range(len(self.adapter.columns))]
+                  for column in sm.xrange(len(self.adapter.columns))]
         return {'cached_widths': widths}
 
     #-------------------------------------------------------------------------
@@ -364,14 +354,16 @@ class TabularEditor(Editor):
 
     def _selected_changed(self, new):
         if not self._no_update:
-            try:
-                selected_row = self.value.index(new)
-            except Exception as e:
-                if TRAITS_DEBUG:
-                    from traits.api import raise_to_debug
-                    raise_to_debug()
+            if new is None:
+                self._selected_row_changed(-1)
             else:
-                self._selected_row_changed(selected_row)
+                try:
+                    selected_row = self.value.index(new)
+                except Exception:
+                    from traitsui.api import raise_to_debug
+                    raise_to_debug()
+                else:
+                    self._selected_row_changed(selected_row)
 
     def _selected_row_changed(self, selected_row):
         if not self._no_update:
@@ -733,7 +725,7 @@ class _TableView(QtGui.QTableView):
         sh = QtGui.QTableView.sizeHint(self)
 
         width = 0
-        for column in sm.range(len(self._editor.adapter.columns)):
+        for column in sm.xrange(len(self._editor.adapter.columns)):
             width += self.sizeHintForColumn(column)
         sh.setWidth(width)
 
@@ -784,7 +776,7 @@ class _TableView(QtGui.QTableView):
 
         # Assign sizes for columns with absolute size requests
         percent_vals, percent_cols = [], []
-        for column in sm.range(len(editor.adapter.columns)):
+        for column in sm.xrange(len(editor.adapter.columns)):
             width = editor.adapter.get_width(
                 editor.object, editor.name, column)
             if width > 1:

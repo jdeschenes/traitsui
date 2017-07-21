@@ -152,8 +152,7 @@ class SimpleSliderEditor(BaseRangeEditor):
         slider.setPageStep(1000)
         slider.setSingleStep(100)
         slider.setValue(ivalue)
-        QtCore.QObject.connect(slider, QtCore.SIGNAL('valueChanged(int)'),
-                               self.update_object_on_scroll)
+        slider.valueChanged.connect(self.update_object_on_scroll)
         panel.addWidget(slider)
 
         self._label_hi = QtGui.QLabel()
@@ -162,8 +161,7 @@ class SimpleSliderEditor(BaseRangeEditor):
             self._label_hi.setMinimumWidth(factory.label_width)
 
         self.control.text = text = QtGui.QLineEdit(fvalue_text)
-        QtCore.QObject.connect(text, QtCore.SIGNAL('editingFinished()'),
-                               self.update_object_on_enter)
+        text.editingFinished.connect(self.update_object_on_enter)
 
         # The default size is a bit too big and probably doesn't need to grow.
         sh = text.sizeHint()
@@ -428,8 +426,7 @@ class LargeRangeSliderEditor(BaseRangeEditor):
         slider.setPageStep(1000)
         slider.setSingleStep(100)
         slider.setValue(ivalue)
-        QtCore.QObject.connect(slider, QtCore.SIGNAL('valueChanged(int)'),
-                               self.update_object_on_scroll)
+        slider.valueChanged.connect(self.update_object_on_scroll)
         panel.addWidget(slider)
 
         # Upper limit button:
@@ -443,8 +440,7 @@ class LargeRangeSliderEditor(BaseRangeEditor):
 
         # Text entry:
         self.control.text = text = QtGui.QLineEdit(fvalue_text)
-        QtCore.QObject.connect(text, QtCore.SIGNAL('editingFinished()'),
-                               self.update_object_on_enter)
+        text.editingFinished.connect(self.update_object_on_enter)
 
         # The default size is a bit too big and probably doesn't need to grow.
         sh = text.sizeHint()
@@ -684,10 +680,7 @@ class SimpleSpinEditor(BaseRangeEditor):
         self.control.setMinimum(low)
         self.control.setMaximum(high)
         self.control.setValue(self.value)
-        QtCore.QObject.connect(
-            self.control,
-            QtCore.SIGNAL('valueChanged(int)'),
-            self.update_object)
+        self.control.valueChanged.connect(self.update_object)
         self.set_tooltip()
 
     #-------------------------------------------------------------------------

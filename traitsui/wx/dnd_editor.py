@@ -220,16 +220,11 @@ class SimpleEditor(Editor):
     def _unpickle(self, file_name):
         """ Returns the unpickled version of a specified file (if possible).
         """
-        fh = None
-        try:
-            fh = file(file_name, 'rb')
-            object = sm.cPickle.load(fh)
-        except:
-            object = None
-
-        if fh is not None:
-            fh.close()
-
+        with open(file_name, 'rb') as fh:
+            try:
+                object = sm.cPickle.load(fh)
+            except:
+                object = None
         return object
 
 #-- wxPython Event Handlers ----------------------------------------------
